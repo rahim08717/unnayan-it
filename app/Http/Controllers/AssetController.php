@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
@@ -59,8 +60,9 @@ class AssetController extends Controller
         $branches = Branch::where('is_active', true)->get();
         $vendors = Vendor::all();
         $employees = Employee::all();
+        $users = User::all();
 
-        return view('assets.create', compact('categories', 'branches', 'vendors', 'employees'));
+        return view('assets.create', compact('categories', 'branches', 'vendors', 'employees', 'users'));
     }
 
     public function store(Request $request)
@@ -84,7 +86,7 @@ class AssetController extends Controller
 
         Asset::create($validated);
 
-        return redirect()->route('assets.index')->with('success', 'নতুন IT অ্যাসেট সফলভাবে যুক্ত করা হয়েছে!');
+        return redirect()->route('assets.index')->with('success', 'নতুন IT অ্যাসেট সফলভাবে যুক্ত করা হয়েছে!');
     }
 
     public function show(Asset $asset)
@@ -99,8 +101,9 @@ class AssetController extends Controller
         $branches = Branch::where('is_active', true)->get();
         $vendors = Vendor::all();
         $employees = Employee::all();
+        $users = User::all();
 
-        return view('assets.edit', compact('asset', 'categories', 'branches', 'vendors', 'employees'));
+        return view('assets.edit', compact('asset', 'categories', 'branches', 'vendors', 'employees', 'users'));
     }
 
     public function update(Request $request, Asset $asset)

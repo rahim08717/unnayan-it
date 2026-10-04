@@ -12,21 +12,12 @@ class WorkEntryAttachment extends Model
     protected $fillable = [
         'work_entry_id',
         'file_path',
-        'file_name',
         'file_type',
-        'attachment_type',
-        'mime_type',
-        'file_size',
-        'uploaded_by',
+        'file_name',
     ];
 
     public function workEntry()
     {
         return $this->belongsTo(WorkEntry::class);
-    }
-
-    public function uploader()
-    {
-        return $this->belongsTo(User::class, 'uploaded_by');
     }
 }

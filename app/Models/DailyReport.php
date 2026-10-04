@@ -10,21 +10,10 @@ class DailyReport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'report_number',
         'user_id',
         'report_date',
+        'notes',
         'status',
-        'total_entries',
-        'total_duration_minutes',
-        'summary_notes',
-        'submitted_at',
-        'reviewed_at',
-    ];
-
-    protected $casts = [
-        'report_date' => 'date',
-        'submitted_at' => 'datetime',
-        'reviewed_at' => 'datetime',
     ];
 
     public function user()
@@ -37,23 +26,15 @@ class DailyReport extends Model
         return $this->hasMany(WorkEntry::class);
     }
 
-    public function shareHistories()
+    public function getTotalDurationAttribute()
     {
-        return $this->hasMany(ReportShareHistory::class);
-    }
+        $minutes = $this->workEntries->sum('duration_minutes');
+        $hours = floor($minutes / 60);
+        $remainingMinutes = $minutes % 60;
 
-    // Helper: Format Duration (Minutes to "X Hours Y Mins")
-    public function getFormattedTotalDurationAttribute(): string
-    {
-        $hours = floor($this->total_duration_minutes / 60);
-        $minutes = $this->total_duration_minutes % 60;
-
-        if ($hours > 0 && $minutes > 0) {
-            return "{$hours} Hours {$minutes} Mins";
-        } elseif ($hours > 0) {
-            return "{$hours} Hours";
-        } else {
-            return "{$minutes} Mins";
+        if ($hours > 0) {
+            return "{$hours} ঘণ্টা {$remainingMinutes} মিনিট";
         }
+        return "{$remainingMinutes} মিনিট";
     }
 }
